@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useT } from "@/hooks/use-t";
 
 export function Logo({
   className,
@@ -7,6 +10,8 @@ export function Logo({
   className?: string;
   compact?: boolean;
 }) {
+  const t = useT();
+
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <span className="relative grid h-8 w-8 place-items-center rounded-[10px] bg-emerald text-emerald-foreground shadow-[0_4px_18px_-6px_hsl(var(--emerald)/0.7)]">
@@ -34,11 +39,17 @@ export function Logo({
       {compact ? null : (
         <div className="flex flex-col leading-tight">
           <span className="font-display text-[15px] font-semibold tracking-tight text-foreground">
-            Clube Fidelidade
+            Siempre Vos
           </span>
-          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            atelier · v1
-          </span>
+          {/* Update href to the MGSIS website URL */}
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("brand.tagline")}
+          </a>
         </div>
       )}
     </div>

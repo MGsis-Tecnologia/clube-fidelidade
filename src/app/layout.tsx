@@ -25,9 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Clube Fidelidade — Programa multi-parceiros",
+  title: "Siempre Vos — Programa multi-parceiros",
   description:
-    "Painel do parceiro para gestão de cashback, pontos, clientes e resgates. Atelier Fintech, refinado e moderno.",
+    "Painel do parceiro para gestão de cashback, pontos, clientes e resgates. MGSIS Tecnologia.",
   icons: {
     icon: "/favicon.svg",
   },

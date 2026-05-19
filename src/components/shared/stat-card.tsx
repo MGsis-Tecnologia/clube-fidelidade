@@ -45,12 +45,12 @@ export function StatCard({
         className,
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1 space-y-1">
+          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground leading-tight">
             {label}
           </p>
-          <p className="display-num text-3xl font-medium text-foreground sm:text-[2rem]">
+          <p className="display-num text-2xl font-medium text-foreground leading-tight">
             {value}
           </p>
         </div>

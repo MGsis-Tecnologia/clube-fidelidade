@@ -13,11 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Logo } from "@/components/layout/logo";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { useAuthStore } from "@/store/auth.store";
+import { useT } from "@/hooks/use-t";
 
 const schema = z.object({
-  email: z.string().email("Informe um e-mail válido."),
-  password: z.string().min(6, "Mínimo de 6 caracteres."),
+  email: z.string().email(),
+  password: z.string().min(6),
   remember: z.boolean().optional(),
 });
 
@@ -28,6 +30,7 @@ export default function LoginPage() {
   const login = useAuthStore((s) => s.login);
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const t = useT();
 
   const {
     register,
@@ -46,8 +49,8 @@ export default function LoginPage() {
     setSubmitting(true);
     await new Promise((r) => setTimeout(r, 750));
     login(data.email);
-    toast.success("Bem-vinda de volta", {
-      description: "Você está conectada ao Atelier Fintech.",
+    toast.success(t("login.toast-title"), {
+      description: t("login.toast-desc"),
     });
     router.push("/dashboard");
   };
@@ -67,23 +70,21 @@ export default function LoginPage() {
         />
 
         <div className="relative z-10 flex items-center justify-between px-10 py-8">
-          <Logo className="[&_span:first-child]:bg-[hsl(35_70%_55%)] [&_span:first-child]:text-[hsl(158_50%_12%)] [&_div_span]:text-emerald-foreground" />
+          <Logo className="[&_span:first-child]:bg-[hsl(35_70%_55%)] [&_span:first-child]:text-[hsl(158_50%_12%)] [&_div_span]:text-emerald-foreground [&_div_a]:text-[hsl(35_50%_70%)] [&_div_a]:hover:text-[hsl(35_60%_85%)]" />
           <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[hsl(35_60%_85%)]">
-            atelier · sp · 2026
+            {t("login.hero-tag")}
           </div>
         </div>
 
         <div className="relative z-10 mt-auto px-10 pb-16">
           <p className="eyebrow text-[hsl(35_50%_80%)] before:bg-[hsl(35_50%_80%)]">
-            Programa multi-parceiros
+            {t("login.eyebrow")}
           </p>
           <h1 className="mt-6 max-w-xl font-display text-5xl font-medium leading-[1.05] tracking-tight text-balance text-emerald-foreground">
-            Transforme cada compra em um motivo para voltar.
+            {t("login.hero-heading")}
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-[hsl(35_30%_85%)] text-pretty">
-            O Clube Fidelidade conecta o ERP do seu negócio a uma plataforma
-            elegante de cashback e pontos — com retenção mensurável e operação
-            sem fricção.
+            {t("login.hero-desc")}
           </p>
 
           <div className="mt-12 grid grid-cols-3 gap-6 border-t border-emerald-foreground/15 pt-8">
@@ -92,7 +93,7 @@ export default function LoginPage() {
                 +84%
               </p>
               <p className="mt-1 text-[11px] uppercase tracking-wider text-[hsl(35_30%_80%)]">
-                Retenção
+                {t("login.stat1-label")}
               </p>
             </div>
             <div>
@@ -100,7 +101,7 @@ export default function LoginPage() {
                 12 min
               </p>
               <p className="mt-1 text-[11px] uppercase tracking-wider text-[hsl(35_30%_80%)]">
-                Setup do ERP
+                {t("login.stat2-label")}
               </p>
             </div>
             <div>
@@ -108,7 +109,7 @@ export default function LoginPage() {
                 1.4M
               </p>
               <p className="mt-1 text-[11px] uppercase tracking-wider text-[hsl(35_30%_80%)]">
-                Transações
+                {t("login.stat3-label")}
               </p>
             </div>
           </div>
@@ -116,37 +117,43 @@ export default function LoginPage() {
       </section>
 
       {/* Right — login form */}
-      <section className="relative flex items-center justify-center px-6 py-12 sm:px-12">
+      <section className="relative flex items-center justify-center px-6 py-12 sm:px-12 dark:bg-[hsl(160_14%_9%)]">
         <div
           className="absolute inset-x-0 top-0 -z-0 h-72 bg-radial-emerald"
           aria-hidden
         />
         <div className="relative z-10 w-full max-w-md">
-          <div className="mb-10 flex items-center justify-between lg:hidden">
+          <div className="mb-8 flex items-center justify-between lg:hidden">
             <Logo />
           </div>
 
-          <p className="eyebrow">Acessar painel</p>
-          <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance">
-            Entre na sua conta
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Continue com o e-mail cadastrado. Os campos vêm pré-preenchidos
-            para demonstração.
-          </p>
+          <div className="mb-10 flex items-start justify-between">
+            <div>
+              <p className="eyebrow">{t("login.form-eyebrow")}</p>
+              <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-balance">
+                {t("login.form-heading")}
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {t("login.form-desc")}
+              </p>
+            </div>
+            <div className="ml-4 mt-1 shrink-0 lg:hidden">
+              <LanguageSwitcher />
+            </div>
+          </div>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-10 space-y-5"
+            className="space-y-5"
             noValidate
           >
             <div className="space-y-2">
-              <Label htmlFor="email">E-mail corporativo</Label>
+              <Label htmlFor="email">{t("login.email-label")}</Label>
               <Input
                 id="email"
                 type="email"
                 autoComplete="email"
-                placeholder="voce@empresa.com"
+                placeholder={t("login.email-placeholder")}
                 {...register("email")}
               />
               {errors.email ? (
@@ -156,17 +163,17 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex items-baseline justify-between">
-                <Label htmlFor="password">Senha</Label>
+                <Label htmlFor="password">{t("login.password-label")}</Label>
                 <button
                   type="button"
                   className="text-xs font-medium text-emerald underline-offset-4 hover:underline"
                   onClick={() =>
-                    toast.info("Enviamos um link de recuperação", {
-                      description: "Verifique a sua caixa de entrada (mock).",
+                    toast.info(t("login.forgot-toast"), {
+                      description: t("login.forgot-toast-desc"),
                     })
                   }
                 >
-                  Esqueci minha senha
+                  {t("login.forgot-password")}
                 </button>
               </div>
               <div className="relative">
@@ -192,13 +199,15 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password ? (
-                <p className="text-xs text-rose-500">{errors.password.message}</p>
+                <p className="text-xs text-rose-500">
+                  {errors.password.message}
+                </p>
               ) : null}
             </div>
 
             <label className="flex items-center gap-2 text-sm text-muted-foreground">
               <Checkbox defaultChecked {...register("remember")} />
-              Manter sessão iniciada por 7 dias
+              {t("login.remember")}
             </label>
 
             <Button
@@ -212,7 +221,7 @@ export default function LoginPage() {
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
-                  Entrar no painel
+                  {t("login.submit")}
                   <ArrowRight className="h-4 w-4" />
                 </>
               )}
@@ -220,15 +229,21 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-10 text-xs text-muted-foreground">
-            Ao continuar, você aceita os{" "}
-            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
-              Termos de Uso
+            {t("login.terms-prefix")}{" "}
+            <a
+              className="underline-offset-4 hover:text-foreground hover:underline"
+              href="#"
+            >
+              {t("login.terms-link")}
             </a>{" "}
-            e a{" "}
-            <a className="underline-offset-4 hover:text-foreground hover:underline" href="#">
-              Política de Privacidade
+            {t("login.terms-and")}{" "}
+            <a
+              className="underline-offset-4 hover:text-foreground hover:underline"
+              href="#"
+            >
+              {t("login.privacy-link")}
             </a>{" "}
-            do Clube Fidelidade.
+            {t("login.terms-suffix")}
           </div>
         </div>
       </section>

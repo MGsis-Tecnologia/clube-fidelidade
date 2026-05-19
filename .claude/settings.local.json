@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir c:\\\\Fidelidade)"
+      "Bash(dir c:\\\\Fidelidade)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); Set-Location \"d:\\\\clube-fidelidade\"; npm audit 2>&1 | Select-Object -First 30)"
     ]
   }
 }

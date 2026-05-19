@@ -25,14 +25,15 @@ import {
   dashboardMetrics,
   purchaseSeries,
   purchases,
-  redemptions,
 } from "@/mocks/seed";
 import { currency, initials, numberBR, relativeTime } from "@/lib/formatters";
 import { usePartnerStore } from "@/store/partner.store";
+import { useT } from "@/hooks/use-t";
 
 export default function DashboardPage() {
   const partner = usePartnerStore((s) => s.partner);
   const m = dashboardMetrics;
+  const t = useT();
 
   const recentPurchases = purchases.slice(0, 6);
   const topCustomers = [...customers]
@@ -42,21 +43,21 @@ export default function DashboardPage() {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        eyebrow={`Bem-vinda · ${partner.tradeName}`}
-        title="Visão geral do seu programa"
-        description="Acompanhe vendas, recompensas e o engajamento dos seus clientes em um só lugar — com a precisão de um relatório financeiro."
+        eyebrow={`${t("dashboard.eyebrow")} · ${partner.tradeName}`}
+        title={t("dashboard.title")}
+        description={t("dashboard.desc")}
         actions={
           <>
             <Button variant="outline" size="sm" asChild>
               <Link href="/compras">
                 <TrendingUp className="h-4 w-4" />
-                Ver compras
+                {t("dashboard.view-purchases")}
               </Link>
             </Button>
             <Button variant="emerald" size="sm" asChild>
               <Link href="/configuracoes">
                 <Sparkles className="h-4 w-4" />
-                Ajustar programa
+                {t("dashboard.adjust-program")}
               </Link>
             </Button>
           </>
@@ -65,23 +66,27 @@ export default function DashboardPage() {
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         <StatCard
-          label="Clientes ativos"
+          label={t("dashboard.active-customers")}
           value={numberBR(m.totalCustomers)}
           delta={m.customersGrowth}
-          hint="últimos 30 dias"
+          hint={t("dashboard.last-30-days")}
           icon={Users}
           accent="emerald"
         />
         <StatCard
-          label="Total vendido"
+          label={t("dashboard.total-sold")}
           value={currency(m.totalSold)}
           delta={m.salesGrowth}
-          hint="mês corrente"
+          hint={t("dashboard.current-month")}
           icon={ShoppingBag}
           accent="amber"
         />
         <StatCard
-          label={partner.config.mechanic === "cashback" ? "Cashback gerado" : "Pontos gerados"}
+          label={
+            partner.config.mechanic === "cashback"
+              ? t("dashboard.cashback-generated")
+              : t("dashboard.points-generated")
+          }
           value={
             partner.config.mechanic === "cashback"
               ? currency(m.totalRewards)
@@ -92,23 +97,23 @@ export default function DashboardPage() {
           accent="emerald"
         />
         <StatCard
-          label="Resgates realizados"
+          label={t("dashboard.redemptions")}
           value={numberBR(m.totalRedemptions)}
           delta={m.redemptionsGrowth}
           icon={Gift}
           accent="slate"
         />
         <StatCard
-          label="Compras hoje"
+          label={t("dashboard.purchases-today")}
           value={numberBR(m.purchasesToday)}
-          hint="processadas pelo ERP"
+          hint={t("dashboard.processed-erp")}
           icon={Banknote}
           accent="amber"
         />
         <StatCard
-          label="Saldo distribuído"
+          label={t("dashboard.balance")}
           value={currency(m.totalBalance)}
-          hint="disponível para resgate"
+          hint={t("dashboard.available-redeem")}
           icon={Wallet}
           accent="emerald"
         />
@@ -118,18 +123,23 @@ export default function DashboardPage() {
         <div className="surface relative overflow-hidden rounded-xl p-6 lg:col-span-3">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="eyebrow">Movimentação · 30 dias</p>
+              <p className="eyebrow">{t("dashboard.chart-eyebrow")}</p>
               <h2 className="mt-2 font-display text-2xl font-medium tracking-tight">
-                Compras &amp; recompensas
+                {t("dashboard.chart-title")}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Volume diário de vendas processadas pelo ERP e o respectivo
-                cashback gerado para os clientes.
+                {t("dashboard.chart-desc")}
               </p>
             </div>
             <div className="hidden gap-4 sm:flex">
-              <Legend color="hsl(var(--chart-1))" label="Vendas" />
-              <Legend color="hsl(var(--chart-2))" label="Recompensas" />
+              <Legend
+                color="hsl(var(--chart-1))"
+                label={t("dashboard.legend-sales")}
+              />
+              <Legend
+                color="hsl(var(--chart-2))"
+                label={t("dashboard.legend-rewards")}
+              />
             </div>
           </div>
           <div className="mt-6">
@@ -140,12 +150,12 @@ export default function DashboardPage() {
         <div className="surface relative overflow-hidden rounded-xl p-6 lg:col-span-2">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="eyebrow">Clientes · 6 meses</p>
+              <p className="eyebrow">{t("dashboard.customers-eyebrow")}</p>
               <h2 className="mt-2 font-display text-2xl font-medium tracking-tight">
-                Base ativa
+                {t("dashboard.customers-title")}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Crescimento da base ativa e aquisição mensal.
+                {t("dashboard.customers-desc")}
               </p>
             </div>
           </div>
@@ -159,14 +169,14 @@ export default function DashboardPage() {
         <div className="surface relative overflow-hidden rounded-xl lg:col-span-3">
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <div>
-              <p className="eyebrow">Atividade recente</p>
+              <p className="eyebrow">{t("dashboard.recent-eyebrow")}</p>
               <h3 className="mt-1 font-display text-lg font-medium">
-                Últimas compras recebidas
+                {t("dashboard.recent-title")}
               </h3>
             </div>
             <Button asChild size="sm" variant="ghost" className="gap-1.5">
               <Link href="/compras">
-                Ver todas
+                {t("dashboard.view-all")}
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -195,7 +205,9 @@ export default function DashboardPage() {
                   </p>
                   <p className="text-xs text-emerald">
                     +{currency(p.reward)}{" "}
-                    {partner.config.mechanic === "cashback" ? "cashback" : "pontos"}
+                    {partner.config.mechanic === "cashback"
+                      ? t("dashboard.cashback")
+                      : t("dashboard.points")}
                   </p>
                 </div>
               </li>
@@ -206,9 +218,9 @@ export default function DashboardPage() {
         <div className="surface relative overflow-hidden rounded-xl lg:col-span-2">
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <div>
-              <p className="eyebrow">Curadoria</p>
+              <p className="eyebrow">{t("dashboard.top-eyebrow")}</p>
               <h3 className="mt-1 font-display text-lg font-medium">
-                Clientes mais valiosos
+                {t("dashboard.top-title")}
               </h3>
             </div>
             <Badge variant="emerald">Top 5</Badge>
@@ -231,7 +243,7 @@ export default function DashboardPage() {
                     {c.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    saldo {currency(c.currentBalance)}
+                    {t("dashboard.balance-label")} {currency(c.currentBalance)}
                   </p>
                 </div>
                 <p className="text-sm font-medium text-foreground">

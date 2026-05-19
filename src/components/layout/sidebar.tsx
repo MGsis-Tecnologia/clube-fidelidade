@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUiStore } from "@/store/ui.store";
 import { useAuthStore } from "@/store/auth.store";
+import { useT } from "@/hooks/use-t";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
@@ -15,6 +16,7 @@ export function Sidebar() {
   const toggle = useUiStore((s) => s.toggleSidebar);
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
+  const t = useT();
 
   return (
     <aside
@@ -22,13 +24,13 @@ export function Sidebar() {
         "hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-30",
         "flex-col border-r border-border bg-card/60 backdrop-blur",
         "transition-[width] duration-300 ease-out",
-        collapsed ? "lg:w-[80px]" : "lg:w-[260px]",
+        collapsed ? "lg:w-[80px]" : "lg:w-[260px]"
       )}
     >
       <div
         className={cn(
           "flex h-16 items-center border-b border-border px-4",
-          collapsed && "justify-center px-2",
+          collapsed && "justify-center px-2"
         )}
       >
         <Logo compact={collapsed} />
@@ -37,7 +39,7 @@ export function Sidebar() {
       <div className="flex-1 overflow-y-auto scroll-thin px-3 py-4">
         {!collapsed ? (
           <p className="px-3 pb-2 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Operação
+            {t("sidebar.section")}
           </p>
         ) : (
           <div className="h-3" />
@@ -54,7 +56,7 @@ export function Sidebar() {
           onClick={toggle}
           className={cn(
             "w-full justify-start gap-2 text-muted-foreground",
-            collapsed && "justify-center",
+            collapsed && "justify-center"
           )}
         >
           {collapsed ? (
@@ -62,7 +64,7 @@ export function Sidebar() {
           ) : (
             <>
               <PanelLeftClose className="h-4 w-4" />
-              <span>Recolher</span>
+              <span>{t("sidebar.collapse")}</span>
             </>
           )}
         </Button>
@@ -75,11 +77,11 @@ export function Sidebar() {
           }}
           className={cn(
             "w-full justify-start gap-2 text-muted-foreground hover:text-rose-500",
-            collapsed && "justify-center",
+            collapsed && "justify-center"
           )}
         >
           <LogOut className="h-4 w-4" />
-          {!collapsed && <span>Sair</span>}
+          {!collapsed && <span>{t("sidebar.logout")}</span>}
         </Button>
       </div>
     </aside>
