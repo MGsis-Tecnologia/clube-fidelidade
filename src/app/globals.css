@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* paper / vellum light theme — warm neutrals + forest emerald */
+    --background: 38 30% 97%;
+    --foreground: 160 18% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 18% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 18% 10%;
+
+    --primary: 158 50% 18%;
+    --primary-foreground: 40 35% 96%;
+
+    --secondary: 35 22% 92%;
+    --secondary-foreground: 158 30% 18%;
+
+    --muted: 35 18% 93%;
+    --muted-foreground: 160 8% 38%;
+
+    --accent: 35 22% 90%;
+    --accent-foreground: 158 30% 18%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 38 14% 86%;
+    --input: 38 14% 86%;
+    --ring: 158 50% 28%;
+
+    --emerald: 158 50% 26%;
+    --emerald-foreground: 40 35% 96%;
+    --emerald-muted: 158 30% 90%;
+
+    --amber: 35 70% 50%;
+    --amber-foreground: 35 50% 12%;
+
+    --chart-1: 158 50% 30%;
+    --chart-2: 35 70% 55%;
+    --chart-3: 200 60% 45%;
+    --chart-4: 280 40% 55%;
+    --chart-5: 12 70% 55%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* deep charcoal with soft emerald highlights */
+    --background: 160 14% 6%;
+    --foreground: 38 25% 94%;
+
+    --card: 160 12% 8%;
+    --card-foreground: 38 25% 94%;
+
+    --popover: 160 14% 7%;
+    --popover-foreground: 38 25% 94%;
+
+    --primary: 152 55% 62%;
+    --primary-foreground: 158 50% 10%;
+
+    --secondary: 160 10% 14%;
+    --secondary-foreground: 38 25% 94%;
+
+    --muted: 160 10% 12%;
+    --muted-foreground: 38 10% 65%;
+
+    --accent: 160 14% 16%;
+    --accent-foreground: 38 25% 94%;
+
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 160 10% 16%;
+    --input: 160 10% 18%;
+    --ring: 152 50% 50%;
+
+    --emerald: 152 55% 55%;
+    --emerald-foreground: 158 50% 10%;
+    --emerald-muted: 160 25% 18%;
+
+    --amber: 35 80% 62%;
+    --amber-foreground: 35 50% 10%;
+
+    --chart-1: 152 55% 60%;
+    --chart-2: 35 80% 62%;
+    --chart-3: 200 70% 65%;
+    --chart-4: 280 50% 70%;
+    --chart-5: 12 75% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv02", "cv11";
+  }
+  ::selection {
+    @apply bg-emerald/25 text-foreground;
+  }
+}
+
+@layer components {
+  /* refined paper-like surface used across cards */
+  .surface {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow:
+      0 1px 0 0 hsl(var(--background) / 0.4) inset,
+      0 1px 2px -1px hsl(var(--foreground) / 0.06),
+      0 4px 18px -12px hsl(var(--foreground) / 0.08);
+  }
+  .dark .surface {
+    box-shadow:
+      0 1px 0 0 hsl(var(--foreground) / 0.03) inset,
+      0 1px 2px -1px hsl(0 0% 0% / 0.4),
+      0 8px 24px -16px hsl(0 0% 0% / 0.6);
+  }
+
+  /* vellum noise overlay applied to hero areas */
+  .vellum::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--tw-gradient-stops, none);
+    pointer-events: none;
+  }
+
+  /* number ticker style */
+  .display-num {
+    font-family: var(--font-fraunces);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* gradient highlight under section labels */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+
+  /* subtle scrollbar */
+  .scroll-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .bg-radial-emerald {
+    background: radial-gradient(
+      900px circle at 0% 0%,
+      hsl(var(--emerald) / 0.12),
+      transparent 60%
+    );
+  }
+}
