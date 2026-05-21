@@ -7,17 +7,14 @@ import { useAuthStore } from "@/store/auth.store";
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const router = useRouter();
-  const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
     if (!isAuthenticated) {
       router.replace("/login");
-    } else {
-      setReady(true);
     }
   }, [isAuthenticated, router]);
 
-  if (!ready) {
+  if (!isAuthenticated) {
     return (
       <div className="grid min-h-screen place-items-center bg-background">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">

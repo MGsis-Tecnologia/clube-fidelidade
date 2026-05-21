@@ -1,4 +1,4 @@
-export type ProgramMechanic = "cashback" | "pontos";
+export type ProgramMechanic = "cashback" | "pontos" | "cupons";
 
 export type CustomerStatus = "ativo" | "inativo" | "vip";
 
@@ -23,7 +23,7 @@ export interface Partner {
 
 export interface ProgramConfig {
   mechanic: ProgramMechanic;
-  returnRate: number; // % do valor da compra
+  returnRate: number; // % do valor da compra (cashback/pontos) ou valor em moeda corrente por cupom
   minRedeem: number; // valor monetário
   expirationDays: number;
   allowPartialRedeem: boolean;

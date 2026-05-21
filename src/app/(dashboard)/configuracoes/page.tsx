@@ -40,7 +40,7 @@ const schema = z.object({
   email: z.string().email("E-mail inválido."),
   phone: z.string().min(8, "Telefone inválido."),
   address: z.string().min(5, "Informe o endereço completo."),
-  mechanic: z.enum(["cashback", "pontos"]),
+  mechanic: z.enum(["cashback", "pontos", "cupons"]),
   returnRate: z.coerce.number().min(0.1).max(100),
   minRedeem: z.coerce.number().min(0),
   expirationDays: z.coerce.number().min(1),
@@ -210,7 +210,7 @@ export default function ConfiguracoesPage() {
                     <Select
                       value={mechanic}
                       onValueChange={(v) =>
-                        setValue("mechanic", v as "cashback" | "pontos", {
+                        setValue("mechanic", v as "cashback" | "pontos" | "cupons", {
                           shouldDirty: true,
                         })
                       }
@@ -221,17 +221,29 @@ export default function ConfiguracoesPage() {
                       <SelectContent>
                         <SelectItem value="cashback">Cashback</SelectItem>
                         <SelectItem value="pontos">Pontos</SelectItem>
+                        <SelectItem value="cupons">Cupons</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <Field
-                    label="Taxa de retorno (%)"
-                    type="number"
-                    step="0.1"
-                    suffix="%"
-                    error={errors.returnRate?.message}
-                    {...register("returnRate", { valueAsNumber: true })}
-                  />
+                  {mechanic === "cupons" ? (
+                    <Field
+                      label="Valor por cupom"
+                      type="number"
+                      step="0.01"
+                      prefix="R$"
+                      error={errors.returnRate?.message}
+                      {...register("returnRate", { valueAsNumber: true })}
+                    />
+                  ) : (
+                    <Field
+                      label="Taxa de retorno (%)"
+                      type="number"
+                      step="0.1"
+                      suffix="%"
+                      error={errors.returnRate?.message}
+                      {...register("returnRate", { valueAsNumber: true })}
+                    />
+                  )}
                   <Field
                     label="Valor mínimo para resgate"
                     type="number"
@@ -283,12 +295,16 @@ export default function ConfiguracoesPage() {
                 <p className="display-num mt-4 text-4xl font-medium text-emerald">
                   {mechanic === "cashback"
                     ? `R$ ${((watch("returnRate") || 0) * 2).toFixed(2)}`
-                    : `${Math.round((watch("returnRate") || 0) * 2 * 10)} pts`}
+                    : mechanic === "pontos"
+                    ? `${Math.round((watch("returnRate") || 0) * 2 * 10)} pts`
+                    : `${Math.floor(200 / (watch("returnRate") || 1))} cupons`}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   {mechanic === "cashback"
                     ? `${watch("returnRate")}% do valor da compra`
-                    : `${watch("returnRate")} pontos a cada R$ 1,00`}
+                    : mechanic === "pontos"
+                    ? `${watch("returnRate")} pontos a cada R$ 1,00`
+                    : `1 cupom a cada R$ ${watch("returnRate")}`}
                 </p>
 
                 <ul className="mt-6 space-y-2 text-xs text-muted-foreground">

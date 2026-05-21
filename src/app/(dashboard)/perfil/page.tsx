@@ -71,8 +71,24 @@ export default function PerfilPage() {
           </p>
 
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <Mini label="Mecânica" value={partner.config.mechanic === "cashback" ? "Cashback" : "Pontos"} />
-            <Mini label="Taxa" value={`${partner.config.returnRate}%`} />
+            <Mini
+              label="Mecânica"
+              value={
+                partner.config.mechanic === "cashback"
+                  ? "Cashback"
+                  : partner.config.mechanic === "pontos"
+                  ? "Pontos"
+                  : "Cupons"
+              }
+            />
+            <Mini
+              label={partner.config.mechanic === "cupons" ? "Por cupom" : "Taxa"}
+              value={
+                partner.config.mechanic === "cupons"
+                  ? `R$ ${partner.config.returnRate}`
+                  : `${partner.config.returnRate}%`
+              }
+            />
             <Mini label="Mínimo resgate" value={`R$ ${partner.config.minRedeem}`} />
             <Mini label="Expira" value={`${partner.config.expirationDays} dias`} />
           </div>

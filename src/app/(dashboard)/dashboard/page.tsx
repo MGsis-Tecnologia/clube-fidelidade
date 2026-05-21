@@ -85,12 +85,16 @@ export default function DashboardPage() {
           label={
             partner.config.mechanic === "cashback"
               ? t("dashboard.cashback-generated")
-              : t("dashboard.points-generated")
+              : partner.config.mechanic === "pontos"
+              ? t("dashboard.points-generated")
+              : t("dashboard.cupons-generated")
           }
           value={
             partner.config.mechanic === "cashback"
               ? currency(m.totalRewards)
-              : numberBR(m.totalRewards * 100)
+              : partner.config.mechanic === "pontos"
+              ? numberBR(m.totalRewards * 100)
+              : `${Math.floor(m.totalRewards)}`
           }
           delta={m.rewardsGrowth}
           icon={Coins}
@@ -204,10 +208,13 @@ export default function DashboardPage() {
                     {currency(p.amount)}
                   </p>
                   <p className="text-xs text-emerald">
-                    +{currency(p.reward)}{" "}
-                    {partner.config.mechanic === "cashback"
-                      ? t("dashboard.cashback")
-                      : t("dashboard.points")}
+                    {partner.config.mechanic === "cupons"
+                      ? `+${Math.floor(p.reward)} ${t("dashboard.cupons")}`
+                      : `+${currency(p.reward)} ${
+                          partner.config.mechanic === "cashback"
+                            ? t("dashboard.cashback")
+                            : t("dashboard.points")
+                        }`}
                   </p>
                 </div>
               </li>

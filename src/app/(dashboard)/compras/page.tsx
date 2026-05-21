@@ -24,6 +24,7 @@ import {
   initials,
   numberBR,
 } from "@/lib/formatters";
+import { usePartnerStore } from "@/store/partner.store";
 import type { Purchase, PurchaseStatus } from "@/types";
 
 const statusVariant: Record<
@@ -49,6 +50,7 @@ const periodOptions = [
 ];
 
 export default function ComprasPage() {
+  const partner = usePartnerStore((s) => s.partner);
   const [period, setPeriod] = React.useState("30");
   const [status, setStatus] = React.useState<PurchaseStatus | "all">("all");
 
@@ -110,10 +112,17 @@ export default function ComprasPage() {
     },
     {
       accessorKey: "reward",
-      header: "Cashback / Pontos",
+      header:
+        partner.config.mechanic === "cashback"
+          ? "Cashback"
+          : partner.config.mechanic === "pontos"
+          ? "Pontos"
+          : "Cupons",
       cell: ({ row }) => (
         <span className="text-emerald font-medium">
-          +{currency(row.original.reward)}
+          {partner.config.mechanic === "cupons"
+            ? `+${Math.floor(row.original.reward)}`
+            : `+${currency(row.original.reward)}`}
         </span>
       ),
     },
@@ -164,7 +173,13 @@ export default function ComprasPage() {
       <PageHeader
         eyebrow="Atividade transacional"
         title="Compras recebidas do ERP"
-        description="Visualize cada transação enviada pela integração e o cashback gerado. Filtre por período, status ou cliente."
+        description={`Visualize cada transação enviada pela integração e o ${
+          partner.config.mechanic === "cupons"
+            ? "cupom"
+            : partner.config.mechanic === "pontos"
+            ? "ponto"
+            : "cashback"
+        } gerado. Filtre por período, status ou cliente.`}
         actions={
           <Button variant="outline" size="sm" onClick={exportCsv}>
             <Download className="h-4 w-4" />
@@ -186,8 +201,18 @@ export default function ComprasPage() {
           accent="amber"
         />
         <StatCard
-          label="Recompensas geradas"
-          value={currency(totals.totalReward)}
+          label={
+            partner.config.mechanic === "cashback"
+              ? "Cashback gerado"
+              : partner.config.mechanic === "pontos"
+              ? "Pontos gerados"
+              : "Cupons gerados"
+          }
+          value={
+            partner.config.mechanic === "cupons"
+              ? `${Math.floor(totals.totalReward)}`
+              : currency(totals.totalReward)
+          }
           accent="emerald"
         />
         <StatCard

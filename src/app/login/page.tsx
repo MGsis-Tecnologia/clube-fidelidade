@@ -58,19 +58,19 @@ export default function LoginPage() {
   return (
     <main className="relative grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
       {/* Left — editorial hero */}
-      <section className="relative hidden overflow-hidden bg-[hsl(158_50%_12%)] text-emerald-foreground lg:flex lg:flex-col">
+      <section className="relative hidden overflow-hidden bg-[hsl(211_81%_12%)] text-emerald-foreground lg:flex lg:flex-col">
         <div className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay bg-grain" />
         <div
           className="pointer-events-none absolute -left-32 -top-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,hsl(35_70%_55%/0.5),transparent_60%)]"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-40 bottom-0 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle_at_center,hsl(152_55%_55%/0.35),transparent_65%)]"
+          className="pointer-events-none absolute -right-40 bottom-0 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle_at_center,hsl(211_81%_55%/0.35),transparent_65%)]"
           aria-hidden
         />
 
         <div className="relative z-10 flex items-center justify-between px-10 py-8">
-          <Logo className="[&_span:first-child]:bg-[hsl(35_70%_55%)] [&_span:first-child]:text-[hsl(158_50%_12%)] [&_div_span]:text-emerald-foreground [&_div_a]:text-[hsl(35_50%_70%)] [&_div_a]:hover:text-[hsl(35_60%_85%)]" />
+          <Logo className="[&_span:first-child]:bg-[hsl(35_70%_55%)] [&_span:first-child]:text-[hsl(211_81%_12%)] [&_div_span]:text-emerald-foreground [&_div_a]:text-[hsl(35_50%_70%)] [&_div_a]:hover:text-[hsl(35_60%_85%)]" />
           <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[hsl(35_60%_85%)]">
             {t("login.hero-tag")}
           </div>
